@@ -6,21 +6,21 @@ It allows developers to display any custom Flutter widget as a dialog with built
 
 ------------------------------
 
-## Feature Preview
+## Features
 
-- Unlimited custom dialogs
-- Works with any Flutter widget
-- Scale & fade animation
-- Dismiss on outside tap
-- Clean Material UI
-- No UI restrictions
-- Future-proof design
+- Show any widget as a dialog
+- Fully custom UI
+- Smooth scale + fade animation
+- Optional barrier dismiss
+- Simple API: show() and hide()
+- No external dependencies
+- Works with all Flutter layouts
 
 ----------------------------
 
 ## Preview
 
-https://github.com/user-attachments/assets/395c222b-9495-45e2-b94b-dd8daa6079d2
+https://github.com/user-attachments/assets/f7478a3c-b541-4906-ae52-44d3797994d3
 
 ---------------------------
 
@@ -31,7 +31,7 @@ Add this to your pubspec.yaml:
 dependencies:
   flutter_custom_dialog:
     git:
-      url: https://github.com/Excelsior-Technologies-Community/flutter_custom_dialog.git
+      url: https://github.com/your-username/flutter_custom_dialog.git
 ```
 Then run:
 ```
@@ -44,10 +44,10 @@ flutter pub get
 flutter_custom_dialog/
 │
 ├─ lib/
-│   ├─ flutter_custom_dialog.dart   # Main export file
+│   ├─ flutter_custom_dialog.dart   # Main library file
 │   │
 │   └─ src/
-│       └─ custom_dialog.dart       # Core dialog engine (ONLY FILE)
+│       └─ custom_dialog.dart       # Core dialog engine
 │
 ├─ example/
 │   └─ main.dart                    # Example usage
@@ -55,33 +55,25 @@ flutter_custom_dialog/
 ├─ pubspec.yaml
 ├─ README.md
 └─ LICENSE
-
 ```
 ----------------------------
 
 ## Usage
 ```
-import 'package:flutter/material.dart';
-import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+Import the package:
 
-class Home extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            CustomDialog.show(
-              context,
-              child: MyDialog(),
-            );
-          },
-          child: Text("Show Dialog"),
-        ),
-      ),
-    );
-  }
-}
+import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
+```
+Show a dialog:
+```
+CustomDialog.show(
+  context,
+  child: MyUserDialog(),
+);
+```
+Close dialog:
+```
+CustomDialog.hide(context);
 ```
 ----------------------------------
 
@@ -91,7 +83,7 @@ Users create dialogs in their own files.
 
 Example:
 ```
-class MyDialog extends StatelessWidget {
+class MyUserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -103,35 +95,34 @@ class MyDialog extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.warning, size: 50),
-          Text("Session Expired"),
+          Icon(Icons.person, size: 50),
+          SizedBox(height: 10),
+          Text("Profile Dialog",
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 10),
+          Text("This dialog is fully created by user."),
           SizedBox(height: 20),
           ElevatedButton(
             onPressed: () => CustomDialog.hide(context),
-            child: Text("Login"),
+            child: Text("Close"),
           )
         ],
       ),
     );
   }
 }
-
-```
-Show it:
-```
-CustomDialog.show(
-  context,
-  child: MyDialog(),
-);
 ```
 -----------------------------------------
 
-## CustomDialog API
+## CustomDialog Properties
 
-| Method   | Description                     |
-| -------- | ------------------------------- |
-| `show()` | Displays any widget as a dialog |
-| `hide()` | Closes the dialog               |
+| Property      | Type         | Required | Default              | Description                 |
+| ------------- | ------------ | -------- | -------------------- | --------------------------- |
+| `context`     | BuildContext | Yes      | —                    | Current widget context      |
+| `child`       | Widget       | Yes      | —                    | Your custom dialog widget   |
+| `dismissible` | bool         | No       | `true`               | Tap outside to close dialog |
+| `padding`     | EdgeInsets   | No       | `EdgeInsets.all(16)` | Space around dialog         |
+
 
 ----------------------------------
 
@@ -171,11 +162,25 @@ SmartDialog.show(
 ```
 ---------------------------------
 
-## How It Works
+## Advanced Usage
 
-This package uses a dialog engine pattern:
+Disable outside tap:
 ```
-SmartDialog.show(context, child: Widget)
+CustomDialog.show(
+  context,
+  dismissible: false,
+  child: LoadingUserDialog(),
+);
+```
+--------------------------------
+
+## Auto close after delay:
+```
+CustomDialog.show(context, child: LoadingUserDialog());
+
+Future.delayed(Duration(seconds: 2), () {
+  CustomDialog.hide(context);
+});
 ```
 --------------------------------
 
@@ -185,8 +190,15 @@ Copyright (c) 2025
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this Flutter Custom Dialog library and associated documentation files
-(the “Software”), to deal in the Software without restriction...
+(the “Software”), to deal in the Software without restriction, including without
+limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND...
+
 
 ```
