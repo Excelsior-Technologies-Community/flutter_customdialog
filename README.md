@@ -1,20 +1,20 @@
 ## Flutter Custom Dialog
 
-Flutter Custom Dialog is a lightweight and reusable Flutter library that helps developers create beautiful dialogs easily and build any custom dialog UI with minimal effort.
+Flutter Custom Dialog is a lightweight and reusable Flutter library that works as a dialog engine and display any custom Flutter widget as a dialog with built-in animation and overlay management.
 
-It provides ready-made dialog templates and also allows building fully custom dialogs using pure Flutter widgets.
+It allows developers to display any custom Flutter widget as a dialog with built-in animation and overlay handling.
 
 ------------------------------
 
 ## Feature Preview
 
-- Confirm dialog (Yes / No)
-- Input dialog (Text input)
-- Loading dialog (Progress)
-- Fully custom dialog support
+- Unlimited custom dialogs
+- Works with any Flutter widget
 - Scale & fade animation
 - Dismiss on outside tap
 - Clean Material UI
+- No UI restrictions
+- Future-proof design
 
 ----------------------------
 
@@ -44,13 +44,10 @@ flutter pub get
 flutter_custom_dialog/
 │
 ├─ lib/
-│   ├─ flutter_custom_dialog.dart   # Main library file
+│   ├─ flutter_custom_dialog.dart   # Main export file
 │   │
 │   └─ src/
-│       ├─ smart_dialog.dart        # Core dialog engine
-│       ├─ confirm_dialog.dart      # Confirm dialog
-│       ├─ input_dialog.dart        # Input dialog
-│       └─ loading_dialog.dart      # Loading dialog
+│       └─ custom_dialog.dart       # Core dialog engine (ONLY FILE)
 │
 ├─ example/
 │   └─ main.dart                    # Example usage
@@ -58,6 +55,7 @@ flutter_custom_dialog/
 ├─ pubspec.yaml
 ├─ README.md
 └─ LICENSE
+
 ```
 ----------------------------
 
@@ -73,11 +71,9 @@ class Home extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           onPressed: () {
-            ConfirmDialog.show(
+            CustomDialog.show(
               context,
-              title: "Delete",
-              message: "Are you sure?",
-              onOk: () {},
+              child: MyDialog(),
             );
           },
           child: Text("Show Dialog"),
@@ -89,25 +85,63 @@ class Home extends StatelessWidget {
 ```
 ----------------------------------
 
-## ConfirmDialog Properties
+## Creating Your Own Dialog (User Side)
 
-| Property     | Type     | Required | Default  | Description                 |
-| ------------ | -------- | -------- | -------- | --------------------------- |
-| `title`      | String   | Yes      | —        | Dialog title text           |
-| `message`    | String   | Yes      | —        | Dialog message text         |
-| `okText`     | String   | No       | "OK"     | Confirm button text         |
-| `cancelText` | String   | No       | "Cancel" | Cancel button text          |
-| `onOk`       | Function | Yes      | —        | Callback when OK is pressed |
+Users create dialogs in their own files.
 
-## InputDialog Properties
+Example:
+```
+class MyDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.warning, size: 50),
+          Text("Session Expired"),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => CustomDialog.hide(context),
+            child: Text("Login"),
+          )
+        ],
+      ),
+    );
+  }
+}
 
-| Property   | Type             | Required | Default | Description     |
-| ---------- | ---------------- | -------- | ------- | --------------- |
-| `title`    | String           | Yes      | —       | Dialog title    |
-| `hint`     | String           | No       | ""      | TextField hint  |
-| `onSubmit` | Function(String) | Yes      | —       | Submit callback |
+```
+Show it:
+```
+CustomDialog.show(
+  context,
+  child: MyDialog(),
+);
+```
+-----------------------------------------
+
+## CustomDialog API
+
+| Method   | Description                     |
+| -------- | ------------------------------- |
+| `show()` | Displays any widget as a dialog |
+| `hide()` | Closes the dialog               |
 
 ----------------------------------
+
+## How It Works
+
+This package uses a dialog engine pattern:
+```
+CustomDialog.show(context, child: Widget)
+```
+---------------------------------
 
 ## LoadingDialog Usage
 ```
@@ -151,10 +185,8 @@ Copyright (c) 2025
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this Flutter Custom Dialog library and associated documentation files
-(the “Software”), to deal in the Software without restriction, including without
-limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-and/or sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions...
+(the “Software”), to deal in the Software without restriction...
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND...
+
 ```
