@@ -9,8 +9,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Home(),
       debugShowCheckedModeBanner: false,
+      home: Home(),
     );
   }
 }
@@ -19,52 +19,49 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Custom Dialog Library")),
+      appBar: AppBar(title: Text("Custom Dialog Engine")),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            ElevatedButton(
-              onPressed: () {
-                ConfirmDialog.show(
-                  context,
-                  title: "Delete",
-                  message: "Are you sure you want to delete?",
-                  onOk: () {
-                    print("Deleted");
-                  },
-                );
-              },
-              child: Text("Confirm Dialog"),
-            ),
-
-            ElevatedButton(
-              onPressed: () {
-                InputDialog.show(
-                  context,
-                  title: "Enter Name",
-                  hint: "Type here",
-                  onSubmit: (value) {
-                    print(value);
-                  },
-                );
-              },
-              child: Text("Input Dialog"),
-            ),
-
-            ElevatedButton(
-              onPressed: () {
-                LoadingDialog.show(context);
-                Future.delayed(Duration(seconds: 2), () {
-                  LoadingDialog.hide(context);
-                });
-              },
-              child: Text("Loading Dialog"),
-            ),
-
-          ],
+        child: ElevatedButton(
+          onPressed: () {
+            CustomDialog.show(
+              context,
+              child: MyUserDialog(),
+            );
+          },
+          child: Text("Open Custom Dialog"),
         ),
+      ),
+    );
+  }
+}
+
+/// This is USER'S dialog (not library)
+class MyUserDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.person, size: 50),
+          SizedBox(height: 10),
+          Text(
+            "Profile Dialog",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 10),
+          Text("This dialog is fully created by user."),
+          SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () => CustomDialog.hide(context),
+            child: Text("Close"),
+          )
+        ],
       ),
     );
   }
